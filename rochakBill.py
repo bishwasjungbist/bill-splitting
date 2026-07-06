@@ -1,7 +1,8 @@
 
-def bill_splitter(grandTotal,rochakPayment):
+import numpy as np
+def bill_splitter(grandTotal,rochakPayment ,n):
     #since rochak also had payed during trip too
-    return(grandTotal/2-rochakPayment)
+    return(grandTotal/n-rochakPayment)
 def grand_total_calculator(prompt):
     total = 0
     while True:
@@ -16,11 +17,17 @@ def grand_total_calculator(prompt):
             print(total)
         except ValueError:
             print("please enter a valid number")
-def main():        
+def main():
     grandTotal=grand_total_calculator("enter amount(q to finish): ")
     print('The total expenditure:',grandTotal)
-    rochakPayement=grand_total_calculator("enter rochaks payement(q to finish): ")
-    print('The total rochak coverage:',rochakPayement)
-    print('Rochak Owe: ',bill_splitter(grandTotal,rochakPayement)) #this prints what rochak owes me
-
+    numberOfParticipants = int(input("How many people are there: "))
+    person_payment_arr = np.empty(numberOfParticipants, dtype=float) 
+    person_owe_arr = np.empty(numberOfParticipants, dtype=float) 
+    counter = numberOfParticipants -1
+    while(counter >= 0):
+        person_payment_arr[counter] = grand_total_calculator(f"enter person {counter+1} payement (q to finish): ")  
+        print('the total coverage by person ',counter + 1 ,": ", person_payment_arr[counter])
+        person_owe_arr[counter] = bill_splitter(grandTotal,person_payment_arr[counter],numberOfParticipants)
+        print('the person ', counter +1 , 'owes: ', person_owe_arr[counter])
+        counter -= 1    
 main()
